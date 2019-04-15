@@ -94,8 +94,7 @@ function setup() {
 
     createCanvas(windowWidth, windowHeight);
     background("#000000"); //ofBackground
-    blendMode(BLEND);
-    frameRate(30);//ofSetFrameRate
+    frameRate(30); //ofSetFrameRate
 
     launchTime = new Date();
     sTime = random(0.1, 3);
@@ -140,6 +139,33 @@ function printList(portList) {
     }
 }
 
+function drawCore(colorA, colorB, R) {
+    for (let radius = R; radius >= 0; radius -= 5) {
+        console.log(radius);
+        const r = map(radius, 0, R, colorA.r, colorB.r); //ofMap
+        const g = map(radius, 0, R, colorA.g, colorB.g); //ofMap
+        const b = map(radius, 0, R, colorA.b, colorB.b); //ofMap
+        strokeWeight(0.1);
+        fill(`rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`);
+
+        beginShape(); //ofBeginShape
+        for (let angle = 0; angle <= 380; angle += 10) {
+            const elapsedTimeInSec = (new Date() - launchTime) / 1000;
+            const time = sTime * elapsedTimeInSec * value * 0.02;
+            const rad = radians(angle);
+
+            const x = radius * cos(rad);
+            const y = radius * sin(rad);
+
+            const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
+            const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
+
+            curveVertex(nx, ny); //ofCurveVertex
+        }
+        endShape(); //ofEndShape
+    }
+}
+
 // Draws in the browser
 function draw() {
     // if (value <= 0) return;
@@ -156,207 +182,38 @@ function draw() {
      */
     rect(0, 0, width, height); //ofDrawRectangle
     translate(width / 2, height / 2); //ofTranslate
+
     if (value < 95) {
-    // if (value >= 90 && value < 95) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-            // console.log(radius);
-            const r = map(radius, 0, R, violet.r, pink.r); //ofMap
-            const g = map(radius, 0, R, violet.g, pink.g); //ofMap
-            const b = map(radius, 0, R, violet.b, pink.b); //ofMap
-            fill(`rgb(${r}, ${g}, ${b})`);
-
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-        }
+        // if (value >= 90 && value < 95) {
+        drawCore(violet, pink, R);
     }
 
     if (value >= 95 && value < 100) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-            const r = map(radius, 0, R, rblue.r, violet.r);
-            const g = map(radius, 0, R, violet.g, rblue.g);
-            const b = map(radius, 0, R, violet.b, rblue.b);
-
-            fill(`rgb(${r}, ${g}, ${b})`);
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-
-        }
+        drawCore(violet, rblue, R);
     }
 
     if (value >= 100 && value < 105) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-
-            const r = map(radius, 0, R, rblue.r, sblue.r);
-            const g = map(radius, 0, R, rblue.g, sblue.g);
-            const b = map(radius, 0, R, rblue.b, sblue.b);
-            fill(`rgb(${r}, ${g}, ${b})`);
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-        }
+        drawCore(rblue, sblue, R);
     }
 
     if (value >= 105 && value < 110) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-
-            const r = map(radius, 0, R, lgreen.r, kgreen.r);
-            const g = map(radius, 0, R, lgreen.g, kgreen.g);
-            const b = map(radius, 0, R, lgreen.b, kgreen.b);
-            fill(`rgb(${r}, ${g}, ${b})`);
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-        }
+        drawCore(lgreen, kgreen, R);
     }
 
     if (value >= 110 && value < 115) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-
-            const r = map(radius, 0, R, oranger.r, yellow.r);
-            const g = map(radius, 0, R, oranger.g, yellow.g);
-            const b = map(radius, 0, R, oranger.b, yellow.b);
-            fill(`rgb(${r}, ${g}, ${b})`);
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-        }
+        drawCore(oranger, yellow, R);
     }
 
     if (value >= 115 && value < 120) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-
-            const r = map(radius, 0, R, red.r, orange.r);
-            const g = map(radius, 0, R, red.g, orange.g);
-            const b = map(radius, 0, R, red.b, orange.b);
-            fill(`rgb(${r}, ${g}, ${b})`);
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-        }
+        drawCore(red, orange, R);
     }
 
     if (value >= 120 && value < 125) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-
-            const r = map(radius, 0, R, rRed.r, red.r);
-            const g = map(radius, 0, R, rRed.g, red.g);
-            const b = map(radius, 0, R, rRed.b, red.b);
-            fill(`rgb(${r}, ${g}, ${b})`);
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-        }
+        drawCore(rRed, red, R);
     }
 
     if (value >= 125) {
-        for (let radius = R; radius >= 0; radius -= 5) {
-
-            const r = map(radius, 0, R, grey.r, dRed.r);
-            const g = map(radius, 0, R, grey.g, dRed.g);
-            const b = map(radius, 0, R, grey.b, dRed.b);
-            fill(`rgb(${r}, ${g}, ${b})`);
-            beginShape(); //ofBeginShape
-            for (let angle = 0; angle <= 380; angle += 10) {
-                const elapsedTimeInSec = (new Date() - launchTime) / 1000;
-                const time = sTime * elapsedTimeInSec * value * 0.02;
-                const rad = radians(angle);
-
-                const x = radius * cos(rad);
-                const y = radius * sin(rad);
-
-                const nx = x + map(noise(x + mode1.x * 0.05 + time * 0.01 + value, y * 0.2 + mode1.y * 0.03 + time * 0.04 + value, time * 0.9), 0, 1, -20, 20);
-                const ny = y + map(noise(x + mode2.x * 0.03 + time * 0.05 + value, y * 0.1 + mode2.y * 0.07 + time * 0.03 + value, time * 0.7), 0, 1, -20, 20);
-
-                curveVertex(nx, ny); //ofCurveVertex
-            }
-            endShape(); //ofEndShape
-        }
+        drawCore(grey, dRed, R);
     }
 }
 
